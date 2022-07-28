@@ -1,4 +1,5 @@
 
+
 //header files
 
 %{
@@ -10,6 +11,10 @@
     extern char* yytext;
     int yylex();
     void yyerror(const char *msg);
+
+    int error=0;
+
+    FILE *yyin;
 %}
 
 
@@ -22,11 +27,13 @@
 
 %%
 
-jsonfile: object               {printf("/n");}
+jsonfile: object
+                           {printf("/n");}
 
        ;
 
-object: LCURLY  RCURLY         {printf(" { }/n ");}
+object: LCURLY  RCURLY
+                           {printf(" { }/n ");}
 
        | LCURLY fields RCURLY
                            {    printf("{"); //;;
@@ -119,6 +126,7 @@ id: jsonNumber
                         else
                         {
                             //yyerror(char *msg);
+                            error++;
                         }
                         }
 
@@ -134,6 +142,17 @@ active: COLON LCURLY gid drawid drawtime status drawbreak visualdraw pricepoints
 
 
 void yyerror(const char *msg) {
-    fprintf(stderr, "%s on line %d\n", msg, yylineno);
+    printf("%s on line %d\n", msg, yylineno);
+    error++;
     exit(1);
+}
+
+int main(int argc, char* argv[]) {
+	FILE *f;
+	f = fopen(argv[1], "r");
+	yyin = f;
+	yyparse();
+	printf("\n Parsing... \n");
+	if (error==0) printf("** No Errors Found \n");
+	else  printf(" Code has %d Errors !\n",error);
 }
