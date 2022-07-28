@@ -18,18 +18,37 @@ int i =0;
 EXP            ([e][-+]?[0-9]+)
 
 %%
-"{"            {printf("LCURLY "); return LCURLY;}
-"}"            {printf("RCURLY "); return RCURLY;}
-"["            {printf("LBRACKET"); return LBRACKET;}
-"]"            {printf("RBRACKET"); return RBRACKET;}
-","            {printf("COMMA "); return COMMA;}
-":"            {printf("COLON "); return COLON;}
+"{"            {printf("%s ", yytext); return LCURLY;}
+"}"            {printf("%s ", yytext); return RCURLY;}
+"["            {printf("%s ", yytext); return LBRACKET;}
+"]"            {printf("%s ", yytext); return RBRACKET;}
+","            {printf("%s ", yytext); return COMMA;}
+":"            {printf("%s ", yytext); return COLON;}
 "true"         {ECHO;}
 "false"        {ECHO;}
 "null"         {ECHO;}
 [ \t\r\n]+     { /* eat whitespace */ }
 \"[^"]*\"             { printf("jsonString "); return jsonString;}
-[1-9]+\.?[0-9]*{EXP}? { printf("jsonNumber "); return jsonNumber;}
+[1-9]+\.?[0-9]*{EXP}? { printf("jsonNumber "); return jsonNumber;}\
+
+"gameId"           {printf("%s ", yytext); return T_gameId;}
+"drawId"           {printf("%s ", yytext); return T_drawId;}
+"drawtime"         {printf("%s ", yytext); return T_drawtime;}
+"status"           {printf("%s", yytext); return T_status;}
+"drawbreak"        {printf("%s", yytext); return T_drawbreak;}
+"visualdraw"       {printf("%s", yytext); return T_visualdraw;}
+
+"pricepoints"      {printf("%s ", yytext); return T_pricepoints;}
+"amount"           {printf("%s ", yytext); return T_amount;}
+"winningnumbers"   {printf("%s ", yytext); return T_winningnumbers;}
+"list"             {printf("%s ", yytext); return T_list;}
+"bonus"            {printf("%s ", yytext); return T_bonus;}
+"prizecat"         {printf("%s ", yytext); return T_prizecat;}
+"wagerstatistics"  {printf("%s ", yytext); return T_wagerstatistics;}
+
+"columns"          {printf("%s ", yytext); return T_columns;}
+"wagers"           {printf("%s ", yytext); return T_wagers;}
+"addon"            {printf("%s ", yytext); return T_addon;}
 
 %%
 
